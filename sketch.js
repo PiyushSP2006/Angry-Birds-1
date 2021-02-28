@@ -1,3 +1,53 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// examples of different types of data in js.
+//string
+var string="this is a string";
+console.log(string);
+
+//number
+var number =1;
+console.log(number);
+
+
+
+
+
+
+
+
+
+
+// examples of different types of data in js.
+//string
+var string="this is a string";
+console.log(string);
+
+//number
+var number =1;
+console.log(number);
+
+
+
+
+
+
+
+
+
+
 // examples of different types of data in js.
 //string
 var string="this is a string";
@@ -46,14 +96,17 @@ const World= Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
+var score=0;
 var gameState="onSling";
 var engine, world;
 var box1, pig1;
 var backgroundImg,platform;
 var bird, slingShot;
+var bg="sprites/bg.png";
 
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+    //backgroundImg = loadImage("sprites/bg.png");
+    getTime();
 }
 
 function setup(){
@@ -72,7 +125,7 @@ function setup(){
 
     box3 = new Box(700,240,70,70);
     box4 = new Box(920,240,70,70);
-    pig3 = new Pig(810, 220);
+    pig2 = new Pig(810, 220);
 
     log3 =  new Log(810,180,300, PI/2);
 
@@ -87,18 +140,27 @@ function setup(){
 }
 
 function draw(){
-    background(backgroundImg);
+
+    if(backgroundImg)
+        background(backgroundImg);
+    
+    noStroke();
+    textSize(35);
+    fill("white");
+    text("score: "+score , width-300,50);
     Engine.update(engine);
     //strokeWeight(4);
     box1.display();
     box2.display();
     ground.display();
     pig1.display();
+    pig1.score();
     log1.display();
 
     box3.display();
     box4.display();
-    pig3.display();
+    pig2.display();
+    pig2.score();
     log3.display();
 
     box5.display();
@@ -108,6 +170,7 @@ function draw(){
     bird.display();
     platform.display();
     //log6.display();
+    getTime();
     slingshot.display();    
 }
 
@@ -129,3 +192,22 @@ function mouseReleased(){
     slingshot.fly();
     gameState="launched";
 }
+
+async function getTime(){
+    
+    var response=await fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata");
+    var responseJSON=await response.json();
+    
+    var datetime=responseJSON.datetime;
+    var hour=datetime.slice(11,13);
+    if(hour>=06&& hour<19){
+        bg="sprites/bg.png";
+    }
+    else{
+        bg="sprites/bg2.jpg";
+    }
+    backgroundImg=loadImage(bg);
+   // console.log(backgroundImg);
+}
+ 
+ 
